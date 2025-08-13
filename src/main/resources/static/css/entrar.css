@@ -1,0 +1,185 @@
+:root {
+            --primary-blue: #012A4A; /* Azul Marinho Principal */
+            --secondary-blue: #013A63; /* Azul para acentos e botões */
+            --light-blue: #e0f2f7; /* Azul bem claro para fundos/destaques */
+            --white: #ffffff;
+            --light-gray: #f8f9fa; /* Cinza muito claro para fundos */
+            --gray: #6c757d; /* Cinza para textos secundários */
+            --dark-gray: #343a40; /* Cinza escuro para textos principais */
+            --border-color: #dee2e6;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+            --font-family: 'Poppins', sans-serif;
+            --border-radius-sm: 6px;
+            --border-radius-md: 10px;
+            --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.05);
+            --box-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s ease;
+        }
+        
+
+        /* Reset Básico e Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ocupa a altura total da viewport */
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--secondary-blue);
+            transition: color var(--transition-speed);
+        }
+
+        a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Container do Formulário de Login */
+        .login-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--box-shadow-md);
+            width: 100%;
+            max-width: 450px; /* Largura máxima para o formulário */
+            text-align: center;
+        }
+
+        .login-container h2 {
+            font-size: 2.2em;
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .login-container p {
+            font-size: 1.05em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        /* Formulário */
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 0.95em;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius-sm);
+            font-family: var(--font-family);
+            font-size: 1em;
+            transition: all var(--transition-speed);
+            background-color: var(--light-gray);
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            background-color: var(--white);
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            border-radius: var(--border-radius-md);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            text-align: center;
+            gap: 8px;
+            width: 100%; /* Botão de largura total */
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Mensagem de sucesso/erro */
+        .form-message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.95em;
+            text-align: left;
+            display: none; /* Escondido por padrão */
+        }
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .link-options {
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: var(--text-light);
+        }
+        .link-options a {
+            font-weight: 500;
+            margin: 0 5px;
+        }
+        .link-options .separator {
+            color: var(--medium-gray);
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-container h2 {
+                font-size: 1.8em;
+            }
+            .login-container p {
+                font-size: 0.95em;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }

@@ -14,15 +14,15 @@ import jakarta.persistence.Table;
 public class Medico {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idmedicos")
+	@Column(name = "id_medicos")
 	int idMedico;
-	@Column(name = "nomemedico")
+	@Column(name = "nome_medico")
 	String nomeMedico;
 	@Column(name = "crm")
 	String crm;
-	@Column(name = "senhamedico")
+	@Column(name = "senha_medico")
 	String senhaMedico;
-	@Column(name = "dataNascimentoMedico")
+	@Column(name = "data_nascimento_medico")
 	LocalDate dataNascMedico;
 	@Column(name = "especialidade")
 	String especialidade;

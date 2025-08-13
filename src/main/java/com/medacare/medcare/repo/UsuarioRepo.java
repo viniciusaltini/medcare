@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.medacare.medcare.model.Usuario;
 
 public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
-
+	
+	boolean existsByEmailUsuarioAndIdUsuarioNot(String email, int id);
 	
 }

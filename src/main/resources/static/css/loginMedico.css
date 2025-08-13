@@ -1,0 +1,185 @@
+:root {
+            --primary-blue: #012A4A; /* Azul Marinho Principal */
+            --secondary-blue: #013A63; /* Azul para acentos e botões */
+            --light-blue: #e0f2f7; /* Azul bem claro para fundos/destaques */
+            --white: #ffffff;
+            --light-gray: #f8f9fa; /* Cinza muito claro para fundos */
+            --gray: #6c757d; /* Cinza para textos secundários */
+            --dark-gray: #343a40; /* Cinza escuro para textos principais */
+            --border-color: #dee2e6;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+            --font-family: 'Poppins', sans-serif;
+            --border-radius-sm: 6px;
+            --border-radius-md: 10px;
+            --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.05);
+            --box-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s ease;
+        }
+
+        /* Reset Básico e Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background: linear-gradient(to right, var(--light-blue), var(--light-gray)); /* Gradiente suave */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ocupa a altura total da viewport */
+            padding: 20px; /* Padding para telas menores */
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--secondary-blue);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Container Principal do Login */
+        .login-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1); /* Sombra mais destacada */
+            width: 100%;
+            max-width: 450px; /* Largura máxima do formulário */
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .login-container h1 {
+            font-size: 2.2em;
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .login-container p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 1.05em;
+        }
+
+        /* Formulário de Login */
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left; /* Alinha labels à esquerda */
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            font-size: 1em;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: var(--font-family);
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Sombra interna sutil */
+        }
+
+        .login-form input[type="text"]:focus,
+        .login-form input[type="password"]:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
+        /* Botão de Entrar */
+        .login-form button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.25);
+            margin-top: 10px;
+        }
+
+        .login-form button:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.35);
+        }
+
+        .login-form button i {
+            margin-left: 8px;
+            font-size: 1em;
+        }
+
+        /* Links adicionais */
+        .additional-links {
+            margin-top: 25px;
+            font-size: 0.95em;
+        }
+
+        .additional-links a {
+            margin: 0 10px;
+        }
+
+        /* Mensagens (para simular erros/sucessos) */
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            display: none; /* Escondido por padrão */
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .login-container {
+                padding: 30px 25px;
+            }
+            .login-container h1 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+            .login-container p {
+                font-size: 0.95em;
+                margin-bottom: 25px;
+            }
+            .login-form button {
+                padding: 12px;
+                font-size: 1.05em;
+            }
+            .additional-links {
+                font-size: 0.9em;
+            }
+        }

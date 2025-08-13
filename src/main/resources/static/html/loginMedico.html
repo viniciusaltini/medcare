@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Médico - MedCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+     <link rel="icon" href="logoarredondadaboa.svg" type="image/x-icon"> 
+     <link rel="stylesheet" href="../css/loginMedico.css">
+     </head>   
+</head>
+<body>
+    <div class="login-container">
+        <h1><i class="fas fa-user-md"></i> Login do Médico</h1>
+        <p>Acesse seu painel para gerenciar consultas e informações.</p>
+
+        <form class="login-form" id="doctorLoginForm">
+            <div class="form-group">
+                <label for="username">Usuário ou E-mail:</label>
+                <input type="text" id="username" name="username" required placeholder="seu.crm@medcare.com.br ou CRM">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required placeholder="**********">
+            </div>
+            <button type="submit">Entrar <i class="fas fa-sign-in-alt"></i></button>
+        </form>
+
+        <div class="message" id="loginMessage"></div>
+
+        <div class="additional-links">
+            <a href="#">Esqueci minha senha</a> | <a href="index.html">Voltar ao Site Principal</a>
+        </div>
+    </div>
+
+    <script src="../js/loginMedico.js"></script>
+</body>
+</html>

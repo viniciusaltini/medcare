@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - MedCare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+     <link rel="icon" href="logoarredondadaboa.svg" type="image/x-icon"> 
+    <link rel="stylesheet" href="../css/registro.css">
+    </head>
+</head>
+<body>
+    <div class="register-container">
+        <i class="fas fa-user-plus" style="font-size: 3.5em; color: var(--primary-blue); margin-bottom: 20px;"></i>
+        <h2>Registrar-se</h2>
+        <p>Crie sua conta para acessar os serviços da MedCare.</p>
+
+        <div id="registerMessage" class="form-message"></div>
+
+        <form class="register-form" id="registerForm">
+            <div class="form-group">
+                <label for="fullName">Nome Completo</label>
+                <input type="text" id="fullName" placeholder="Seu nome completo" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="seuemail@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Mínimo 6 caracteres" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Criar Conta
+            </button>
+        </form>
+
+        <p class="link-return">Já tem uma conta? <a href="login.html">Faça Login aqui</a></p>
+        <p class="link-return"><a href="index.html">Voltar à Página Inicial</a></p>
+    </div>
+
+    <script src="../js/registro.js">
+    </script>
+</body>
+</html>

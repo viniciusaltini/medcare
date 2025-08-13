@@ -18,6 +18,9 @@ public class MedicoService {
 	}
 
 	public void inserirMedico (Medico med) {
+		if (med.getCrm().length() != 13) {
+			throw new RuntimeException("CRM inválido");
+		}
 		medRepo.save(med);
 	}
 	
@@ -26,6 +29,9 @@ public class MedicoService {
 	}
 	
 	public void atualizarMedico (Medico med){
+		if(medRepo.existsByCrmAndIdMedicoNot(med.getCrm(), med.getIdMedico())) {
+			throw new RuntimeException("CRM já existe");
+		}
 		medRepo.save(med);
 	}
 	

@@ -16,19 +16,19 @@ import jakarta.persistence.Table;
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column (name = "idusuarios")
+	@Column (name = "id_usuarios")
 	int idUsuario;
-	@Column (name = "nomeusuario")
+	@Column (name = "nome_usuario")
 	String nomeUsuario;
-	@Column (name = "emailusuario")
+	@Column (name = "email_usuario")
 	String emailUsuario;
-	@Column (name = "senhausuario")
+	@Column (name = "senha_usuario")
 	String senhaUsuario;
-	@Column (name = "dataNascUsuario")
+	@Column (name = "data_nascimento_usuario")
 	LocalDate dataNascUsuario;
-	@Column (name = "pesoUsuario")
+	@Column (name = "peso_usuario")
 	BigDecimal peso;
-	@Column (name = "alturaUsuario")
+	@Column (name = "altura_usuario")
 	BigDecimal altura;
 	public int getIdUsuario() {
 		return idUsuario;

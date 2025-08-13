@@ -26,6 +26,9 @@ public class UsuarioService {
 	}
 	
 	public void atualizaUsuario (Usuario u) {
+		if(usuRepo.existsByEmailUsuarioAndIdUsuarioNot(u.getEmailUsuario(), u.getIdUsuario())) {
+			throw new RuntimeException("Email já existe");
+		}
 		usuRepo.save(u);
 	}
 	

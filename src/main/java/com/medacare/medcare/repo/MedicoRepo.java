@@ -6,5 +6,5 @@ import com.medacare.medcare.model.Medico;
 
 public interface MedicoRepo extends JpaRepository<Medico, Integer> {
 	
-	
+	boolean existsByCrmAndIdMedicoNot(String crm, int id);
 }
