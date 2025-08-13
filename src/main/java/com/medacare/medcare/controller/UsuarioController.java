@@ -1,5 +1,47 @@
 package com.medacare.medcare.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.medacare.medcare.model.Usuario;
+import com.medacare.medcare.service.UsuarioService;
+
+@RestController("/usuarios")
+@CrossOrigin
 public class UsuarioController {
 
+	private final UsuarioService usuService;
+		
+	public UsuarioController(UsuarioService usuService) {
+		super();
+		this.usuService = usuService;
+	}
+
+	@PostMapping
+	public void inserirUsuario (@RequestBody Usuario u) {
+		usuService.inserirUsuario(u);
+	}
+	
+	@GetMapping
+	public List<Usuario> listarUsuarios () {
+		return usuService.listarUsuarios();
+	}
+	
+	@PutMapping
+	public void atualizaUsuario (@RequestBody Usuario u) {
+		usuService.atualizaUsuario(u);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deletaUsuario (@PathVariable int id) {
+		usuService.deletaUsuario(id);
+	}
 }

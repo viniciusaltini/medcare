@@ -1,5 +1,35 @@
 package com.medacare.medcare.service;
 
-public class UsuarioService {
+import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.medacare.medcare.model.Usuario;
+import com.medacare.medcare.repo.UsuarioRepo;
+
+@Service
+public class UsuarioService {
+	
+	private final UsuarioRepo usuRepo;
+
+	public UsuarioService(UsuarioRepo usuRepo) {
+		super();
+		this.usuRepo = usuRepo;
+	}
+	
+	public void inserirUsuario (Usuario u) {
+		usuRepo.save(u);
+	}
+	
+	public List<Usuario> listarUsuarios (){
+		return usuRepo.findAll();
+	}
+	
+	public void atualizaUsuario (Usuario u) {
+		usuRepo.save(u);
+	}
+	
+	public void deletaUsuario (int id) {
+		usuRepo.deleteById(id);
+	}
 }

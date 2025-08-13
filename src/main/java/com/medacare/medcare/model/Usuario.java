@@ -3,13 +3,32 @@ package com.medacare.medcare.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column (name = "idusuarios")
 	int idUsuario;
+	@Column (name = "nomeusuario")
 	String nomeUsuario;
+	@Column (name = "emailusuario")
 	String emailUsuario;
+	@Column (name = "senhausuario")
 	String senhaUsuario;
+	@Column (name = "dataNascUsuario")
 	LocalDate dataNascUsuario;
+	@Column (name = "pesoUsuario")
 	BigDecimal peso;
+	@Column (name = "alturaUsuario")
 	BigDecimal altura;
 	public int getIdUsuario() {
 		return idUsuario;
