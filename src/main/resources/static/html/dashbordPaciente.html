@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCare - Painel do Paciente</title>
+    <link rel="icon" href="../css/logoazuldefinitiva.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+     <link rel="icon" href="logoarredondadaboa.svg" type="image/x-icon">
+     <link rel="stylesheet" href="../css/dashbordPaciente.css">
+      </head>
+    <script>
+        // Verifica se o paciente está logado no sessionStorage
+        // Se não estiver logado, redireciona para a página de login do paciente
+        if (sessionStorage.getItem('medcarePatientLoggedIn') !== 'true') {
+            window.location.href = 'loginPaciente.html'; 
+        }
+
+        // Recupera o nome do paciente do sessionStorage ou usa um padrão
+        const patientName = sessionStorage.getItem('medcarePatientName') || 'Paciente MedCare';
+        // Define o nome globalmente para fácil acesso
+        window.currentPatientName = patientName; 
+    </script>
+    
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://via.placeholder.com/100/007bff/FFFFFF?text=P" alt="Avatar do Paciente" class="profile-pic">
+                <h3 id="sidebarPatientName">Olá, Paciente!</h3> <p>Paciente MedCare</p>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" data-section="overview" class="active"><i class="fas fa-home"></i> Visão Geral</a></li>
+                    <li><a href="#" data-section="my-appointments"><i class="fas fa-calendar-alt"></i> Minhas Consultas</a></li>
+                    <li><a href="#" data-section="schedule-appointment"><i class="fas fa-stethoscope"></i> Agendar Nova Consulta</a></li>
+                    <li><a href="#" data-section="my-profile"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                    <li><a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h1 id="currentSectionTitle">Visão Geral</h1>
+                <div class="user-info">
+                    <span class="user-name" id="headerPatientName">Paciente MedCare</span>
+                    <img src="https://via.placeholder.com/45/007bff/FFFFFF?text=P" alt="Avatar" class="user-avatar">
+                </div>
+            </div>
+
+            <section id="overview" class="content-section active">
+                <h2>Seja Bem-vindo(a) ao seu Painel MedCare!</h2>
+                <p>Aqui você pode gerenciar suas consultas, agendar novos atendimentos e atualizar seus dados.</p>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+                    <div style="background-color: var(--light-blue); padding: 25px; border-radius: var(--border-radius-md); flex: 1; min-width: 280px; box-shadow: var(--box-shadow-sm);">
+                        <h3>Próxima Consulta</h3>
+                        <p style="font-size: 1.1em; color: var(--primary-blue); font-weight: 600;" id="nextAppointmentSummary">Nenhuma consulta agendada.</p>
+                        <button class="btn btn-primary btn-small" onclick="showSection('schedule-appointment'); activateNavLink('schedule-appointment');">Agendar Agora <i class="fas fa-plus-circle"></i></button>
+                    </div>
+                    <div style="background-color: var(--white); padding: 25px; border-radius: var(--border-radius-md); flex: 1; min-width: 280px; box-shadow: var(--box-shadow-sm);">
+                        <h3>Consultas Concluídas</h3>
+                        <p style="font-size: 1.1em; color: var(--primary-blue); font-weight: 600;" id="completedAppointmentsCount">5</p>
+                        <button class="btn btn-secondary btn-small" onclick="showSection('my-appointments'); activateNavLink('my-appointments');">Ver Histórico <i class="fas fa-history"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="my-appointments" class="content-section" style="display: none;">
+                <h2>Minhas Consultas</h2>
+                <p>Aqui você encontra todas as suas consultas agendadas e realizadas.</p>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="statusFilter">Filtrar por Status:</label>
+                        <select id="statusFilter" class="form-control">
+                            <option value="all">Todos</option>
+                            <option value="confirmed">Confirmada</option>
+                            <option value="pending">Pendente</option>
+                            <option value="completed">Concluída</option>
+                            <option value="canceled">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="searchAppointments">Pesquisar por Médico/Especialidade:</label>
+                        <input type="text" id="searchAppointments" class="form-control" placeholder="Digite aqui...">
+                    </div>
+                </div>
+                
+                <table class="data-table" id="appointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Médico</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Especialidade</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </section>
+
+            <section id="schedule-appointment" class="content-section" style="display: none;">
+                <h2>Agendar Nova Consulta</h2>
+                <p>Preencha os dados abaixo para solicitar um novo agendamento.</p>
+                
+                <div id="scheduleMessage" class="form-message" style="display: none;"></div>
+
+                <form class="schedule-form" id="scheduleAppointmentForm">
+                    <div class="form-group">
+                        <label for="doctorName">Médico/Especialidade</label>
+                        <select id="doctorName" required>
+                            <option value="">Selecione o médico ou especialidade</option>
+                            <option value="Dr. João Silva (Clínico Geral)">Dr. João Silva (Clínico Geral)</option>
+                            <option value="Dra. Ana Costa (Cardiologista)">Dra. Ana Costa (Cardiologista)</option>
+                            <option value="Dr. Pedro Rocha (Pediatra)">Dr. Pedro Rocha (Pediatra)</option>
+                            <option value="Dra. Marta Lima (Dermatologista)">Dra. Marta Lima (Dermatologista)</option>
+                            <option value="Dr. Carlos Mendes (Ortopedista)">Dr. Carlos Mendes (Ortopedista)</option>
+                            <option value="Dra. Sofia Nogueira (Ginecologista)">Dra. Sofia Nogueira (Ginecologista)</option>
+                            <option value="Dr. Ricardo Dias (Oftalmologista)">Dr. Ricardo Dias (Oftalmologista)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentDate">Data Preferencial</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentTime">Horário Preferencial</label>
+                        <input type="time" id="appointmentTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentType">Tipo de Consulta</label>
+                        <select id="appointmentType" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="Presencial">Presencial</option>
+                            <option value="Online">Online (Telemedicina)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">Motivo da Consulta</label>
+                        <textarea id="reason" rows="4" placeholder="Descreva brevemente o motivo da consulta" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calendar-plus"></i> Solicitar Agendamento
+                    </button>
+                </form>
+            </section>
+
+            <section id="my-profile" class="content-section" style="display: none;">
+                <h2>Meu Perfil</h2>
+                <p>Visualize e edite suas informações pessoais.</p>
+                <form class="profile-form" id="profileForm">
+                    <div class="form-group">
+                        <label for="profileName">Nome Completo</label>
+                        <input type="text" id="profileName" value="Fulano de Tal" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">E-mail</label>
+                        <input type="email" id="profileEmail" value="paciente@medcare.com" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePhone">Telefone</label>
+                        <input type="text" id="profilePhone" value="(47) 99999-8888">
+                    </div>
+                    <div class="form-group">
+                        <label for="profileAddress">Endereço</label>
+                        <input type="text" id="profileAddress" value="Rua Exemplo, 123 - Centro">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="editProfileBtn"><i class="fas fa-edit"></i> Editar Dados</button>
+                    <button type="submit" class="btn btn-success" id="saveProfileBtn" style="display: none;"><i class="fas fa-save"></i> Salvar Alterações</button>
+                    <button type="button" class="btn btn-secondary" id="cancelProfileBtn" style="display: none;"><i class="fas fa-times"></i> Cancelar</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <div id="appointmentDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalAppointmentTitle">Detalhes da Consulta</h2>
+            <div class="modal-body">
+                <p><strong>Médico:</strong> <span id="modalDoctorName"></span></p>
+                <p><strong>Data:</strong> <span id="modalAppointmentDate"></span></p>
+                <p><strong>Horário:</strong> <span id="modalAppointmentTime"></span></p>
+                <p><strong>Especialidade:</strong> <span id="modalSpecialty"></span></p>
+                <p><strong>Tipo:</strong> <span id="modalAppointmentType"></span></p>
+                <p><strong>Motivo da Consulta:</strong> <span id="modalReason"></span></p>
+                <hr>
+                <p><strong>Status:</strong> <span id="modalStatus" class="status-badge"></span></p>
+                <p><strong>Observações do Médico:</strong> <span id="modalDoctorNotes"></span></p>
+                <p><strong>Receita/Medicação:</strong> <span id="modalPrescription"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="rescheduleAppointmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button reschedule-close-button">&times;</span>
+            <h2>Remarcar Consulta</h2>
+            <div class="modal-body">
+                <p>Você está remarcando a consulta com <strong id="rescheduleDoctor"></strong> em <strong id="rescheduleOldDate"></strong> às <strong id="rescheduleOldTime"></strong>.</p>
+                <div id="rescheduleMessage" class="form-message" style="display: none;"></div>
+                <form id="rescheduleForm">
+                    <input type="hidden" id="rescheduleAppointmentId">
+                    <div class="form-group">
+                        <label for="newAppointmentDate">Nova Data</label>
+                        <input type="date" id="newAppointmentDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newAppointmentTime">Novo Horário</label>
+                        <input type="time" id="newAppointmentTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rescheduleReason">Motivo da Remarcação (Opcional)</label>
+                        <textarea id="rescheduleReason" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Confirmar Remarcação</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../js/dashbordPaciente.js">
+       
+    </script>
+</body>
+</html>

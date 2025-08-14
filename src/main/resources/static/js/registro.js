@@ -1,4 +1,4 @@
-document.getElementById('registerForm').addEventListener('submit', function(event) {
+document.getElementById('registerForm').addEventListener('submit', async function(event) {
           event.preventDefault(); // Impede o envio real do formulário
 
           const fullName = document.getElementById('fullName').value;
@@ -6,6 +6,24 @@ document.getElementById('registerForm').addEventListener('submit', function(even
           const password = document.getElementById('password').value;
           const confirmPassword = document.getElementById('confirmPassword').value;
           const registerMessage = document.getElementById('registerMessage');
+
+            if (password !== confirmPassword) {
+              registerMessage.textContent = 'As senhas não coincidem.';
+              registerMessage.classList.add('error');
+              registerMessage.style.display = 'block';
+              return;
+          }
+          
+
+          const response = await fetch('http://localhost:8080/usuarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nomeUsuario: fullName,
+            emailUsuario: email,
+            senhaUsuario: password
+         })
+        });
 
           // Limpa mensagens anteriores
           registerMessage.style.display = 'none';
@@ -34,15 +52,13 @@ document.getElementById('registerForm').addEventListener('submit', function(even
           }
 
           // Simulação de registro bem-sucedido
-          registerMessage.textContent = `Conta para "${fullName}" criada com sucesso! Você será redirecionado para o login.`;
+          registerMessage.textContent = `Conta 
+		  para "${fullName}" criada com sucesso! Você será redirecionado para o login.`;
           registerMessage.classList.add('success');
           registerMessage.style.display = 'block';
 
-          // Em um cenário real, você faria uma requisição AJAX para um backend aqui.
-          console.log('Registro simulado:', { fullName, email, password });
-
           // Redireciona para a página de login após 3 segundos (simulando um processo)
           setTimeout(() => {
-              window.location.href = 'login.html'; // Redireciona para a página de login (que ainda criaremos)
+              window.location.href = 'loginPaciente.html'; // Redireciona para a página de login (que ainda criaremos)
           }, 3000);
       });

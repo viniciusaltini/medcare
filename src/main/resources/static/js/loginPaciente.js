@@ -35,7 +35,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
                 // Em um cenário real, redirecionaria para o dashboard do paciente
                 setTimeout(() => {
-                    window.location.href = 'patient-dashboard.html'; 
+                    window.location.href = 'dashbordPaciente.html'; 
                 }, 2000);
 
             } else {

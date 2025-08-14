@@ -41,4 +41,5 @@ public class MedicoController {
 	public void deletaMedico (@PathVariable int id) {
 		medService.deletarMedico(id);
 	}
+	
 }

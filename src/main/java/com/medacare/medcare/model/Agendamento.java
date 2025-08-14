@@ -1,0 +1,86 @@
+package com.medacare.medcare.model;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="agendamentos")
+public class Agendamento {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_agendamento")
+	int idAgendamento;
+	@Column(name="data_agendamento")
+	LocalDateTime dataAgendamento;
+	@ManyToOne
+	@JoinColumn(name = "id_medicos", referencedColumnName = "id_medicos")
+	Medico uedico;
+	@ManyToOne
+	@JoinColumn(name = "id_usuarios", referencedColumnName = "id_usuarios")
+	Usuario usuario;
+	@Column(name="tipo_consulta")
+	boolean tipoConsulta;
+	@Column(name="motivo_consulta")
+	String motivoConsulta;
+	public int getIdAgendamento() {
+		return idAgendamento;
+	}
+	public void setIdAgendamento(int idAgendamento) {
+		this.idAgendamento = idAgendamento;
+	}
+	public LocalDateTime getDataAgendamento() {
+		return dataAgendamento;
+	}
+	public void setDataAgendamento(LocalDateTime dataAgendamento) {
+		this.dataAgendamento = dataAgendamento;
+	}
+	public Medico getUedico() {
+		return uedico;
+	}
+	public void setUedico(Medico uedico) {
+		this.uedico = uedico;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	public boolean isTipoConsulta() {
+		return tipoConsulta;
+	}
+	public void setTipoConsulta(boolean tipoConsulta) {
+		this.tipoConsulta = tipoConsulta;
+	}
+	public String getMotivoConsulta() {
+		return motivoConsulta;
+	}
+	public void setMotivoConsulta(String motivoConsulta) {
+		this.motivoConsulta = motivoConsulta;
+	}
+	public Agendamento(int idAgendamento, LocalDateTime dataAgendamento, Medico uedico, Usuario usuario,
+			boolean tipoConsulta, String motivoConsulta) {
+		super();
+		this.idAgendamento = idAgendamento;
+		this.dataAgendamento = dataAgendamento;
+		this.uedico = uedico;
+		this.usuario = usuario;
+		this.tipoConsulta = tipoConsulta;
+		this.motivoConsulta = motivoConsulta;
+	}
+	public Agendamento() {
+		super();
+	}
+	
+	
+	
+}
