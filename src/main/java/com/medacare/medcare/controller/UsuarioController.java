@@ -1,6 +1,7 @@
 package com.medacare.medcare.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,5 +46,10 @@ public class UsuarioController {
 	@DeleteMapping("/{id}")
 	public void deletaUsuario (@PathVariable int id) {
 		usuService.deletaUsuario(id);
+	}
+	
+	@GetMapping("/{id}")
+	public Optional<Usuario> listaPorId (@PathVariable int id) {
+		return usuService.listaPorId(id);
 	}
 }

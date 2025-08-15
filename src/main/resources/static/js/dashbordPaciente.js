@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
            const cancelProfileBtn = document.getElementById('cancelProfileBtn');
            const profileInputs = profileForm.querySelectorAll('input:not(#profileName):not(#profileEmail), textarea');
            
+           carregarMedicos();
+
            // Elementos para o nome dinâmico
            const sidebarPatientName = document.getElementById('sidebarPatientName');
            const headerPatientName = document.getElementById('headerPatientName');
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                document.getElementById('profileName').value = window.currentPatientName; // Atualiza o campo no perfil
            }
 
+            
 
            // --- Funções Auxiliares ---
 
@@ -93,27 +96,100 @@ document.addEventListener('DOMContentLoaded', () => {
                });
            }
 
+
+async function carregarMedicos() {
+  const select = document.getElementById('doctorName');
+  select.add(new Option('Teste Médico (Especialidade)', '999'));
+  const errorDiv = document.getElementById('errorMessage');
+
+  // placeholder enquanto carrega
+  select.innerHTML = '<option disabled selected>Carregando…</option>';
+  errorDiv.textContent = '';
+
+  try {
+    const resp = await fetch('http://localhost:8080/medicos');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+    const data = await resp.json();
+
+    // Se vier paginado (Spring Data), tenta pegar de data.content
+    const medicos = Array.isArray(data) ? data : (Array.isArray(data?.content) ? data.content : []);
+
+    // Debug: veja no console se os campos estão lá
+    console.table(medicos.slice(0, 5));
+
+    // Limpa e repõe placeholder
+    select.innerHTML = '<option value="" disabled selected>Selecione um médico…</option>';
+
+    // Mapeamento EXATO do seu JSON: idMedico + nomeMedico
+    medicos.forEach(m => {
+    const id = m.idMedico || m.id_medicos;
+    const nome = m.nomeMedico || m.nome_medico;
+    const especialidade = m.especialidade || '';
+    if (id == null || !nome) return;
+    select.add(new Option(`${nome} (${especialidade})`, String(id)));
+    });
+    // Depois do forEach que adiciona as opções:
+    console.log('HTML final do <select>:', select.innerHTML);
+
+    // Se só ficou o placeholder, algo deu ruim
+    if (select.options.length === 1) {
+      errorDiv.textContent =
+        '⚠️ Recebi ' + medicos.length + ' registros, mas não consegui montar o texto das opções. Veja o console.';
+      console.log('HTML do <select>:', select.innerHTML);
+    }
+
+    // (Opcional) ajuda a debugar ao escolher
+    select.addEventListener('change', (e) => {
+      const opt = e.target.selectedOptions[0];
+      console.log('Escolhido:', opt.text, ' – id:', opt.value);
+    });
+
+  } catch (e) {
+    console.error(e);
+    errorDiv.textContent = '❌ Não foi possível carregar a lista de médicos. Tente novamente.';
+    // mantém o select com a última mensagem
+    select.innerHTML = '<option disabled selected>Erro ao carregar</option>';
+  }
+}
+
            // Simulação de Submissão de Agendamento: Lida com o formulário de agendamento de consulta
            if (scheduleAppointmentForm) {
-               scheduleAppointmentForm.addEventListener('submit', (event) => {
-                   event.preventDefault(); // Impede o envio real do formulário
+               scheduleAppointmentForm.addEventListener('submit', async function (event) {
+                    event.preventDefault(); // Impede o envio real do formulário
                    
                    const doctor = document.getElementById('doctorName').value;
                    const date = document.getElementById('appointmentDate').value;
                    const time = document.getElementById('appointmentTime').value;
                    const appointmentType = document.getElementById('appointmentType').value; // Novo campo
                    const reason = document.getElementById('reason').value;
+                   const datetime = `${date} ${time}:00`;
 
                    // Validação simples dos campos
                    if (!doctor || !date || !time || !appointmentType || !reason) {
                        showFormMessage(scheduleMessage, 'Por favor, preencha todos os campos para agendar a consulta.', 'error');
                        return;
                    }
+                    const response = await fetch('http://localhost:8080/agendamentos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        data_agendamento: datetime,
+                        id_medicos: doctor,
+                        tipo_consulta: appointmentType,
+                        motivo_consulta: reason
+                    })
+                });
 
-                   // Simulação de sucesso
+                 if (response.ok) {
+                    // Simulação de sucesso
                    showFormMessage(scheduleMessage, `Agendamento com "${doctor}" para ${date} às ${time} (${appointmentType}) solicitado com sucesso!`, 'success');
                    scheduleAppointmentForm.reset(); // Limpa o formulário
-                   console.log('Agendamento simulado:', { doctor, date, time, appointmentType, reason }); // Exibe no console
+                }   else {
+                    scheduleMessage.textContent = 'Erro ao agendar consulta.';
+                    scheduleMessage.className = 'error'; 
+                }
+                   
 
                    // Opcional: Adicionar a nova consulta à lista simulada (para aparecer na tabela)
                    const newAppointmentId = Object.keys(simulatedAppointments).length + 1;

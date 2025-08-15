@@ -1,6 +1,7 @@
 package com.medacare.medcare.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,7 @@ public class MedicoService {
 	public void deletarMedico (int id) {
 		medRepo.deleteById(id);
 	}
-	
+	public Optional<Medico> listaPorId (int id) {
+		return medRepo.findById(id);
+	}
 }

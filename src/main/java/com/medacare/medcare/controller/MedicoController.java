@@ -1,6 +1,7 @@
 package com.medacare.medcare.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,4 +43,8 @@ public class MedicoController {
 		medService.deletarMedico(id);
 	}
 	
+	@GetMapping("/{id}")
+	public Optional<Medico> listaPorId (@PathVariable int id) {
+		return medService.listaPorId(id);
+	}
 }

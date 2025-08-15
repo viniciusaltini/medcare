@@ -267,7 +267,11 @@
         /* Formulários (gerais, podem ser adaptados) */
         .form-group {
             margin-bottom: 20px;
+            color: black;
         }
+        #doctorName { color: inherit; font-size: 14px; }
+        #doctorName option { color: initial; }
+
 
         .form-group label {
             display: block;
