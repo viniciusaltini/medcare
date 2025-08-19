@@ -121,6 +121,7 @@ async function carregarMedicos() {
     // Limpa e repõe placeholder
     select.innerHTML = '<option value="" disabled selected>Selecione um médico…</option>';
 
+
     // Mapeamento EXATO do seu JSON: idMedico + nomeMedico
     medicos.forEach(m => {
     const id = m.idMedico || m.id_medicos;
