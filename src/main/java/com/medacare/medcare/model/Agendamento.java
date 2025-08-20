@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,16 +22,27 @@ public class Agendamento {
 	int idAgendamento;
 	@Column(name="data_agendamento")
 	LocalDateTime dataAgendamento;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_medicos", referencedColumnName = "id_medicos")
 	Medico uedico;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuarios", referencedColumnName = "id_usuarios")
 	Usuario usuario;
 	@Column(name="tipo_consulta")
 	boolean tipoConsulta;
 	@Column(name="motivo_consulta")
 	String motivoConsulta;
+	@Column(name="anamnese")
+	String anamnese;
+	
+	
+	
+	public String getAnamnese() {
+		return anamnese;
+	}
+	public void setAnamnese(String anamnese) {
+		this.anamnese = anamnese;
+	}
 	public int getIdAgendamento() {
 		return idAgendamento;
 	}
@@ -68,7 +80,7 @@ public class Agendamento {
 		this.motivoConsulta = motivoConsulta;
 	}
 	public Agendamento(int idAgendamento, LocalDateTime dataAgendamento, Medico uedico, Usuario usuario,
-			boolean tipoConsulta, String motivoConsulta) {
+			boolean tipoConsulta, String motivoConsulta, String anamnese) {
 		super();
 		this.idAgendamento = idAgendamento;
 		this.dataAgendamento = dataAgendamento;
@@ -76,6 +88,7 @@ public class Agendamento {
 		this.usuario = usuario;
 		this.tipoConsulta = tipoConsulta;
 		this.motivoConsulta = motivoConsulta;
+		this.anamnese = anamnese;
 	}
 	public Agendamento() {
 		super();

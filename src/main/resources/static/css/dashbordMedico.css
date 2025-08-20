@@ -1,0 +1,407 @@
+:root {
+            --primary-blue: #003366; /* Azul Marinho Principal */
+            --secondary-blue: #007bff; /* Azul para acentos e botões */
+            --light-blue: #e0f2f7; /* Azul bem claro para fundos/destaques */
+            --white: #ffffff;
+            --light-gray: #f0f2f5; /* Fundo mais suave */
+            --medium-gray: #ced4da; /* Para bordas e divisores */
+            --dark-gray: #343a40; /* Cinza escuro para textos principais */
+            --text-light: #6c757d; /* Cinza para textos secundários */
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+            --warning-orange: #ffc107;
+            --font-family: 'Poppins', sans-serif;
+            --border-radius-sm: 6px;
+            --border-radius-md: 10px;
+            --border-radius-lg: 15px;
+            --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.05);
+            --box-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s ease;
+        }
+
+        /* Reset Básico e Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--light-gray);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden; /* Evita scroll horizontal */
+        }
+
+        /* Layout do Dashboard */
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar (Barra Lateral) */
+        .sidebar {
+            width: 280px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--box-shadow-md);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-header .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light-blue);
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.6em;
+            margin-bottom: 5px;
+            color: var(--white);
+        }
+
+        .sidebar-header p {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            font-size: 1.05em;
+        }
+
+        .sidebar-nav a i {
+            margin-right: 12px;
+            font-size: 1.2em;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            box-shadow: var(--box-shadow-sm);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1; /* Ocupa o espaço restante */
+            padding: 30px 40px;
+            background-color: var(--light-gray);
+            overflow-y: auto; /* Permite scroll se o conteúdo for grande */
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .content-header h1 {
+            font-size: 2.5em;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info .user-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .user-info .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary-blue);
+        }
+
+        /* Seções de Conteúdo */
+        .content-section {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--box-shadow-md);
+            margin-bottom: 30px;
+            display: none; /* Escondido por padrão, JavaScript gerencia a visibilidade */
+        }
+        .content-section.active {
+            display: block; /* Apenas a seção ativa é mostrada */
+        }
+
+        .content-section h2 {
+            font-size: 1.8em;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--medium-gray);
+        }
+
+        /* Botões Gerais */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-md);
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            text-align: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--success-green);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--secondary-blue);
+            border: 1px solid var(--secondary-blue);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            border-radius: var(--border-radius-sm);
+        }
+
+        /* Badges de Status */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .status-badge.confirmed { background-color: #d4edda; color: #155724; } /* Verde suave */
+        .status-badge.pending { background-color: #fff3cd; color: #856404; } /* Amarelo suave */
+        .status-badge.completed { background-color: #cce5ff; color: #004085; } /* Azul suave */
+        .status-badge.canceled { background-color: #f8d7da; color: #721c24; } /* Vermelho suave */
+
+        /* Tabelas */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--medium-gray);
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--light-gray);
+        }
+
+        .data-table .actions button {
+            margin-right: 5px;
+        }
+
+        /* Formulários (gerais) */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius-sm);
+            font-family: var(--font-family);
+            font-size: 1em;
+            transition: all var(--transition-speed);
+            background-color: var(--light-gray);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            background-color: var(--white);
+        }
+
+        /* Modal de visualização de detalhes */
+        .modal {
+            display: none; /* Escondido por padrão */
+            position: fixed; /* Fica por cima de tudo */
+            z-index: 1000; /* Alto z-index para estar no topo */
+            left: 0;
+            top: 0;
+            width: 100%; /* Largura total */
+            height: 100%; /* Altura total */
+            overflow: auto; /* Habilita scroll se o conteúdo for muito grande */
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente escuro */
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* Para transição de fade */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal.active {
+            display: flex; /* Torna visível */
+            opacity: 1; /* Faz aparecer com fade */
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: auto; /* Centraliza vertical e horizontalmente */
+            padding: 30px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            transform: translateY(-20px); /* Para efeito de subida */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .modal.active .modal-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-content h2 {
+            font-size: 2em;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--medium-gray);
+            text-align: left;
+        }
+
+        .modal-body p {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+            color: var(--dark-gray);
+            text-align: left;
+        }
+
+        .modal-body p strong {
+            color: var(--primary-blue);
+            min-width: 120px; /* Para alinhar labels em p */
+            display: inline-block;
+        }
+
+        .modal-body hr {
+            border: none;
+            border-top: 1px solid var(--light-gray);
+            margin: 20px 0;
+        }
+
+        .close-button {
+            color: var(--dark-gray);
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--danger-red);
+            text-decoration: none;
+            cursor: pointer;
+        }

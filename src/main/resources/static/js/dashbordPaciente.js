@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
                document.getElementById('profileName').value = window.currentPatientName; // Atualiza o campo no perfil
            }
 
-            
 
            // --- Funções Auxiliares ---
 
