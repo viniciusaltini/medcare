@@ -1,6 +1,6 @@
--- Criar banco de dados (opcional, ajuste o nome se quiser)
-CREATE DATABASE clinica;
-USE clinica;
+
+CREATE DATABASE medcare;
+USE medcare;
 
 -- =========================
 -- TABELA DE USUÁRIOS
