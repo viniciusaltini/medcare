@@ -41,4 +41,5 @@ public class UsuarioService {
 	public Optional<Usuario> listaPorId (int id) {
 		return usuRepo.findById(id);
 	}
+	
 }

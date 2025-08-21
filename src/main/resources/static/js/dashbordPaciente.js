@@ -115,7 +115,7 @@ async function carregarMedicos() {
     const medicos = Array.isArray(data) ? data : (Array.isArray(data?.content) ? data.content : []);
 
     // Debug: veja no console se os campos estão lá
-    console.table(medicos.slice(0, 5));
+    
 
     // Limpa e repõe placeholder
     select.innerHTML = '<option value="" disabled selected>Selecione um médico…</option>';
@@ -130,7 +130,7 @@ async function carregarMedicos() {
     select.add(new Option(`${nome} (${especialidade})`, String(id)));
     });
     // Depois do forEach que adiciona as opções:
-    console.log('HTML final do <select>:', select.innerHTML);
+    
 
     // Se só ficou o placeholder, algo deu ruim
     if (select.options.length === 1) {
@@ -612,12 +612,8 @@ async function carregarMedicos() {
                completedAppointmentsCount.textContent = completedCount;
            };
 
-
-           // --- Inicialização ao Carregar a Página ---
-           // Define o nome do paciente na interface
-           document.getElementById('sidebarPatientName').textContent = `Olá, ${window.currentPatientName.split(' ')[0]}!`;
-           document.getElementById('headerPatientName').textContent = window.currentPatientName;
-           document.getElementById('profileName').value = window.currentPatientName; // Para o campo de perfil
+        
+           
 
            showSection('overview');
            activateNavLink('overview'); 
