@@ -13,7 +13,7 @@
 <body>
     <div class="login-container">
         <i class="fas fa-user-circle" style="font-size: 3.5em; color: var(--primary-blue); margin-bottom: 20px;"></i>
-        <h2>Login de Paciente</h2>
+        <h2>Login</h2>
         <p>Acesse sua conta MedCare.</p>
 
         <div id="loginMessage" class="form-message"></div>
@@ -29,9 +29,12 @@
             </div>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-sign-in-alt"></i> Entrar
-            </button>
+            </button><br>
+            
         </form>
-
+            <form action="/logout" method="post" >
+            <button class="btn btn-secondary">Sou médico.</button>
+            </form>
         <p class="link-options">
             <a href="forgotPassword.html">Esqueceu a senha?</a>
             <span class="separator">|</span>

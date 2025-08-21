@@ -20,14 +20,20 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/css/**", "/js/**")
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/css/**", "/js/**", "/html/loginPaciente.html")
 						.permitAll().anyRequest().authenticated()) // Exige autenticação para outras páginas
-				.formLogin(form -> form.loginPage("/html/loginPaciente.html") // Define a página de login personalizada
+				.formLogin(form -> form.loginPage("/html/entrar.html") // Define a página de login personalizada
 						.loginProcessingUrl("/loginPaciente") // Action do formulário de login
 						.usernameParameter("email") // Campo de email no formulário
 						.passwordParameter("password") // Campo de senha no formulário
 						.defaultSuccessUrl("/html/dashbordPaciente.html", true).permitAll()) // Redirecionamento após login bem-sucedido
-				.logout(logout -> logout.permitAll()); // Permite logout sem autenticação
+				.logout(logout -> logout
+			            .logoutUrl("/logout") // endpoint de logout
+			            .logoutSuccessUrl("/entrar.html?logout") // para onde redirecionar
+			            .invalidateHttpSession(true) // invalida sessão
+			            .clearAuthentication(true)   // limpa autenticação
+			            .deleteCookies("JSESSIONID")// apaga cookies
+			            );
 		return http.build();
 	}
 

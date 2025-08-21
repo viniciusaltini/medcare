@@ -132,6 +132,18 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
         }
+        
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--secondary-blue);
+            border: 1px solid var(--secondary-blue);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
 
         /* Mensagem de sucesso/erro */
         .form-message {

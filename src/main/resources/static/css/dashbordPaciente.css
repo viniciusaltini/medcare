@@ -16,7 +16,7 @@
             --border-radius-lg: 15px;
             --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.05);
             --box-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
-            --transition-speed: 0.3s ease;
+            --transition-speed: 0.1s ease;
         }
 
         /* Reset Básico e Estilos Globais */
@@ -30,7 +30,7 @@
             font-family: var(--font-family);
             line-height: 1.6;
             color: var(--dark-gray);
-            background-color: var(--light-gray);
+            background-color: var(--light-gray) !important;
             display: flex;
             min-height: 100vh;
             overflow-x: hidden; /* Evita scroll horizontal */

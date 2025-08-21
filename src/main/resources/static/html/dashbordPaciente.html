@@ -10,18 +10,7 @@
      <link rel="icon" href="logoarredondadaboa.svg" type="image/x-icon">
      <link rel="stylesheet" href="../css/dashbordPaciente.css">
       </head>
-    <script>
-        // Verifica se o paciente está logado no sessionStorage
-        // Se não estiver logado, redireciona para a página de login do paciente
-        if (sessionStorage.getItem('medcarePatientLoggedIn') !== 'true') {
-            window.location.href = 'loginPaciente.html'; 
-        }
-
-        // Recupera o nome do paciente do sessionStorage ou usa um padrão
-        const patientName = sessionStorage.getItem('medcarePatientName') || 'Paciente MedCare';
-        // Define o nome globalmente para fácil acesso
-        window.currentPatientName = patientName; 
-    </script>
+    
     
 </head>
 <body>
@@ -29,7 +18,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 
-                <h3 id="sidebarPatientName">Olá !</h3> <p>Paciente MedCare</p>
+                <h3 id="sidebarPatientName"></h3> <p>Paciente MedCare</p>
             </div>
             <nav class="sidebar-nav">
                 <ul>
@@ -37,7 +26,9 @@
                     <li><a href="#" data-section="my-appointments"><i class="fas fa-calendar-alt"></i> Minhas Consultas</a></li>
                     <li><a href="#" data-section="schedule-appointment"><i class="fas fa-stethoscope"></i> Agendar Nova Consulta</a></li>
                     <li><a href="#" data-section="my-profile"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                    <li><a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                    <form action="/logout" method="post">
+                    <button type="submit"><li><i class="fas fa-sign-out-alt"></i> Sair</li></button>
+                    </form>
                 </ul>
             </nav>
         </aside>
@@ -214,9 +205,8 @@
         </div>
     </div>
 
-
-    <script src="../js/dashbordPaciente.js">
+    <script src="../js/dashbordPaciente.js"></script>
        
-    </script>
+    
 </body>
 </html>
