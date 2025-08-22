@@ -18,6 +18,10 @@ public class UsuarioService {
 		this.usuRepo = usuRepo;
 	}
 	
+	public Optional<Usuario> findByEmail(String email) {
+        return usuRepo.findByEmailUsuario(email);
+    }
+	
 	public void inserirUsuario (Usuario u) {
 		usuRepo.save(u);
 	}

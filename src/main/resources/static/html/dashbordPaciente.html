@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
      <link rel="icon" href="logoarredondadaboa.svg" type="image/x-icon">
      <link rel="stylesheet" href="../css/dashbordPaciente.css">
+     <link rel="stylesheet" href="../css/dashbordPaciente2.css">
       <script src="../js/carregar-nome-paciente.js" defer></script>
+      <script src="../js/carregar-perfil.js" defer></script>
     </head>
 <body>
     <div class="dashboard-container">
@@ -130,30 +132,68 @@
             </section>
 
             <section id="my-profile" class="content-section" style="display: none;">
-                <h2>Meu Perfil</h2>
-                <p>Visualize e edite suas informações pessoais.</p>
-                <form class="profile-form" id="profileForm">
-                    <div class="form-group">
-                        <label for="profileName">Nome Completo</label>
-                        <input type="text" id="profileName" value="Fulano de Tal" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="profileEmail">E-mail</label>
-                        <input type="email" id="profileEmail" value="paciente@medcare.com" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="profilePhone">Telefone</label>
-                        <input type="text" id="profilePhone" value="(47) 99999-8888">
-                    </div>
-                    <div class="form-group">
-                        <label for="profileAddress">Endereço</label>
-                        <input type="text" id="profileAddress" value="Rua Exemplo, 123 - Centro">
-                    </div>
-                    <button type="button" class="btn btn-primary" id="editProfileBtn"><i class="fas fa-edit"></i> Editar Dados</button>
-                    <button type="submit" class="btn btn-success" id="saveProfileBtn" style="display: none;"><i class="fas fa-save"></i> Salvar Alterações</button>
-                    <button type="button" class="btn btn-secondary" id="cancelProfileBtn" style="display: none;"><i class="fas fa-times"></i> Cancelar</button>
-                </form>
-            </section>
+    <h2>Meu Perfil</h2>
+    <p>Visualize e edite suas informações pessoais. Campos marcados com <span style="color:var(--text-light)">cinza</span> não podem ser editados.</p>
+    
+    <div id="profileLoading" class="loading" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i> Carregando seus dados...
+    </div>
+    
+    <div id="profileError" class="error-message" style="display: none;">
+        <i class="fas fa-exclamation-circle"></i> Erro ao carregar perfil. Tente novamente.
+    </div>
+    
+    <form class="profile-form" id="profileForm">
+        <!-- Campos NÃO editáveis -->
+        <div class="form-group">
+            <label for="profileName">Nome Completo</label>
+            <input type="text" id="profileName" name="nomeUsuario" readonly class="readonly-field">
+            <small style="color:var(--text-light); font-size:0.85em;">Este campo não pode ser editado</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="profileEmail">E-mail</label>
+            <input type="email" id="profileEmail" name="emailUsuario" readonly class="readonly-field">
+            <small style="color:var(--text-light); font-size:0.85em;">Este campo não pode ser editado</small>
+        </div>
+        
+        <!-- Seção de campos editáveis -->
+        <div class="editable-fields">
+            <h3><i class="fas fa-edit"></i> Informações Editáveis</h3>
+            
+            <div class="form-group">
+                <label for="profileBirthdate">Data de Nascimento</label>
+                <input type="date" id="profileBirthdate" name="dataNascimentoUsuario" readonly>
+            </div>
+            
+            <div class="form-row" style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="profileWeight">Peso (kg)</label>
+                    <input type="number" id="profileWeight" name="pesoUsuario" step="0.1" min="0" max="300" readonly 
+                           placeholder="Ex: 75.5">
+                </div>
+                
+                <div class="form-group" style="flex: 1;">
+                    <label for="profileHeight">Altura (m)</label>
+                    <input type="number" id="profileHeight" name="alturaUsuario" step="0.01" min="0" max="3" readonly 
+                           placeholder="Ex: 1.75">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="button" class="btn btn-primary" id="editProfileBtn">
+                <i class="fas fa-edit"></i> Editar Dados
+            </button>
+            <button type="submit" class="btn btn-success" id="saveProfileBtn" style="display: none;">
+                <i class="fas fa-save"></i> Salvar Alterações
+            </button>
+            <button type="button" class="btn btn-secondary" id="cancelProfileBtn" style="display: none;">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+        </div>
+    </form>
+</section>
         </main>
     </div>
 

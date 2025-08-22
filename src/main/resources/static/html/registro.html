@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
      <link rel="icon" href="logoarredondadaboa.svg" type="image/x-icon"> 
     <link rel="stylesheet" href="../css/registro.css">
-    </head>
+    <script src="../js/registrar-paciente.js" defer></script>
 </head>
 <body>
     <div class="register-container">
@@ -36,7 +36,7 @@
                 <label for="confirmPassword">Confirmar Senha</label>
                 <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
             </div>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" onclick="registrarPaciente()">
                 <i class="fas fa-user-plus"></i> Criar Conta
             </button>
         </form>

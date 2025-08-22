@@ -1,0 +1,189 @@
+/* ===== ESTILOS ESPECÍFICOS PARA A SEÇÃO MEU PERFIL ===== */
+
+/* Container do formulário de perfil */
+.profile-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Grupos de formulário específicos para perfil */
+.profile-form .form-group {
+    margin-bottom: 25px;
+}
+
+/* Campos não editáveis */
+.readonly-field {
+    background-color: var(--light-gray) !important;
+    border-color: var(--medium-gray) !important;
+    color: var(--text-light) !important;
+    cursor: not-allowed !important;
+}
+
+.readonly-field:focus {
+    box-shadow: none !important;
+    border-color: var(--medium-gray) !important;
+}
+
+/* Campos editáveis quando em modo de edição */
+.profile-form input:not(.readonly-field)[readonly] {
+    background-color: var(--light-gray);
+    border-color: var(--medium-gray);
+    color: var(--dark-gray);
+}
+
+.profile-form input:not(.readonly-field):not([readonly]) {
+    background-color: var(--white);
+    border-color: var(--secondary-blue);
+    color: var(--dark-gray);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Ações do formulário */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Loading específico para perfil */
+#profileLoading {
+    text-align: center;
+    padding: 40px;
+    color: var(--secondary-blue);
+    font-size: 1.1em;
+}
+
+#profileLoading i {
+    margin-right: 10px;
+}
+
+/* Mensagem de erro específica para perfil */
+#profileError {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px 20px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+/* Estilos para labels de campos não editáveis */
+.profile-form .form-group label[for="profileName"],
+.profile-form .form-group label[for="profileEmail"] {
+    color: var(--text-light);
+}
+
+/* ===== RESPONSIVIDADE PARA O PERFIL ===== */
+
+@media (max-width: 768px) {
+    .profile-form {
+        max-width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .profile-form .form-group {
+        margin-bottom: 20px;
+    }
+}
+
+/* ===== ANIMAÇÕES SUAVES ===== */
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+    transition: all var(--transition-speed);
+}
+
+/* ===== ESTILOS PARA ESTADOS DE FOCO ===== */
+.profile-form input:not(.readonly-field):focus,
+.profile-form select:focus,
+.profile-form textarea:focus {
+    outline: none;
+    border-color: var(--secondary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* ===== FEEDBACK VISUAL PARA CAMPOS VÁLIDOS/INVÁLIDOS ===== */
+.profile-form input:not(.readonly-field):valid:not(:focus) {
+    border-color: #28a745;
+}
+
+.profile-form input:not(.readonly-field):invalid:not(:focus) {
+    border-color: #dc3545;
+}
+
+/* ===== ESTILOS PARA O TOAST DE SUCESSO ===== */
+.toast-success {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--success-green);
+    color: white;
+    padding: 15px 25px;
+    border-radius: var(--border-radius-md);
+    z-index: 10000;
+    box-shadow: var(--box-shadow-md);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.toast-success i {
+    font-size: 1.2em;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===== MELHORIAS VISUAIS PARA CAMPOS NUMÉRICOS ===== */
+.profile-form input[type="number"] {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+
+/* ===== ESTILOS PARA O GRUPO DE CAMPOS EDITÁVEIS ===== */
+.editable-fields {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f8ff 100%);
+    padding: 25px;
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid var(--secondary-blue);
+    margin: 25px 0;
+}
+
+.editable-fields .form-group {
+    margin-bottom: 20px;
+}
+
+.editable-fields h3 {
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.editable-fields h3 i {
+    color: var(--secondary-blue);
+}

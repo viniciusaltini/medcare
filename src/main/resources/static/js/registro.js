@@ -15,41 +15,11 @@ document.getElementById('registerForm').addEventListener('submit', async functio
           }
           
 
-          const response = await fetch('http://localhost:8080/usuarios', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            nomeUsuario: fullName,
-            emailUsuario: email,
-            senhaUsuario: password
-         })
-        });
-
           // Limpa mensagens anteriores
           registerMessage.style.display = 'none';
           registerMessage.className = 'form-message'; // Remove classes de estilo
 
-          // Simulação de validação
-          if (!fullName || !email || !password || !confirmPassword) {
-              registerMessage.textContent = 'Por favor, preencha todos os campos.';
-              registerMessage.classList.add('error');
-              registerMessage.style.display = 'block';
-              return;
-          }
-
-          if (password.length < 6) {
-              registerMessage.textContent = 'A senha deve ter no mínimo 6 caracteres.';
-              registerMessage.classList.add('error');
-              registerMessage.style.display = 'block';
-              return;
-          }
-
-          if (password !== confirmPassword) {
-              registerMessage.textContent = 'As senhas não coincidem.';
-              registerMessage.classList.add('error');
-              registerMessage.style.display = 'block';
-              return;
-          }
+          
 
           // Simulação de registro bem-sucedido
           registerMessage.textContent = `Conta 

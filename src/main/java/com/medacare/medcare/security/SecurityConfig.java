@@ -20,7 +20,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/css/**", "/js/**", "/html/loginPaciente.html")
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/usuarios/**", "/css/**", "/js/**", "/html/loginPaciente.html", "/html/registro.html")
 						.permitAll().anyRequest().authenticated()) // Exige autenticação para outras páginas
 				.formLogin(form -> form.loginPage("/html/entrar.html") // Define a página de login personalizada
 						.loginProcessingUrl("/loginPaciente") // Action do formulário de login
