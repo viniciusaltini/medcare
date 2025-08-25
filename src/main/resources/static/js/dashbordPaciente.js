@@ -256,7 +256,6 @@ async function carregarMedicos() {
                    sidebarPatientName.textContent = `Olá, ${updatedName.split(' ')[0]}!`;
                    headerPatientName.textContent = updatedName;
 
-                   alert('Dados do perfil salvos com sucesso (simulado)!'); // Alerta de sucesso
                    toggleProfileEdit(false); // Volta ao modo de visualização
                });
            }
