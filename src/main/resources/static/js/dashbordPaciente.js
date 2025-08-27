@@ -126,8 +126,10 @@ async function carregarMedicos() {
     const id = m.idMedico || m.id_medicos;
     const nome = m.nomeMedico || m.nome_medico;
     const especialidade = m.especialidade || '';
-    if (id == null || !nome) return;
-    select.add(new Option(`${nome} (${especialidade})`, String(id)));
+    const option = document.createElement('option');
+    option.value = id;
+    option.textContent = `${nome} (${especialidade})`;
+    select.appendChild(option);
     });
     // Depois do forEach que adiciona as opções:
     
@@ -152,61 +154,80 @@ async function carregarMedicos() {
     select.innerHTML = '<option disabled selected>Erro ao carregar</option>';
   }
 }
+        
 
+
+// Carrega o nome salvo se existir
+const savedName = sessionStorage.getItem("username");
+if (savedName) {
+    document.getElementById("usernameDisplay").textContent = savedName;
+    document.getElementById("headerPatientName").textContent = savedName;
+}
+
+// Busca dados atualizados
+document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
+
+// Busca dados atualizados
+document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
            // Simulação de Submissão de Agendamento: Lida com o formulário de agendamento de consulta
            if (scheduleAppointmentForm) {
                scheduleAppointmentForm.addEventListener('submit', async function (event) {
                     event.preventDefault(); // Impede o envio real do formulário
                    
-                   const doctor = document.getElementById('doctorName').value;
+                   const doctor = document.getElementById('doctorName');
+                    const doctorid = doctor.value;
+                    const doctorName = doctor.options[doctor.selectedIndex].text;
                    const date = document.getElementById('appointmentDate').value;
                    const time = document.getElementById('appointmentTime').value;
                    const appointmentType = document.getElementById('appointmentType').value; // Novo campo
                    const reason = document.getElementById('reason').value;
-                   const datetime = `${date} ${time}:00`;
+                   const datetime = `${date}T${time}:00`;
+                   console.log(datetime)
 
                    // Validação simples dos campos
                    if (!doctor || !date || !time || !appointmentType || !reason) {
                        showFormMessage(scheduleMessage, 'Por favor, preencha todos os campos para agendar a consulta.', 'error');
                        return;
                    }
+                   // Busca o id do paciente atual
+                    let pacienteId = null;
+                    try {
+                        const userResp = await fetch('http://localhost:8080/usuarios/atual', { credentials: 'include' });
+                        if (userResp.ok) {
+                            const userData = await userResp.json();
+                            pacienteId = userData.idUsuario || userData.id_usuarios || userData.id; // ajuste conforme o campo retornado
+                        }
+                    } catch (e) {
+                        showFormMessage(scheduleMessage, 'Erro ao obter dados do paciente.', 'error');
+                        return;
+                    }
+
+                    if (!pacienteId) {
+                        showFormMessage(scheduleMessage, 'Não foi possível identificar o paciente.', 'error');
+                        return;
+                    }
+                    appointmentTypeValue = appointmentType.toLowerCase() === "presencial";
                     const response = await fetch('http://localhost:8080/agendamentos', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         data_agendamento: datetime,
-                        id_medicos: doctor,
+                        id_medicos: doctorid,
+                        id_paciente: pacienteId,
                         tipo_consulta: appointmentType,
                         motivo_consulta: reason
                     })
                 });
+                console.log('Resposta do servidor:', response);
 
                  if (response.ok) {
                     // Simulação de sucesso
-                   showFormMessage(scheduleMessage, `Agendamento com "${doctor}" para ${date} às ${time} (${appointmentType}) solicitado com sucesso!`, 'success');
+                   showFormMessage(scheduleMessage, `Agendamento com "${doctorName}" para ${date} às ${time} (${appointmentType}) solicitado com sucesso!`, 'success');
                    scheduleAppointmentForm.reset(); // Limpa o formulário
                 }   else {
                     scheduleMessage.textContent = 'Erro ao agendar consulta.';
                     scheduleMessage.className = 'error'; 
                 }
-                   
-
-                   // Opcional: Adicionar a nova consulta à lista simulada (para aparecer na tabela)
-                   const newAppointmentId = Object.keys(simulatedAppointments).length + 1;
-                   const newAppointment = {
-                       id: String(newAppointmentId), // Garante que o ID é uma string
-                       doctor: doctor.split('(')[0].trim(), // Pega apenas o nome do médico
-                       date: date,
-                       time: time,
-                       specialty: doctor.split('(')[1].replace(')', '').trim(), // Pega a especialidade
-                       status: "pending",
-                       reason: reason,
-                       appointmentType: appointmentType, // Adiciona o tipo de consulta
-                       doctorNotes: "Aguardando confirmação.",
-                       prescription: "Nenhuma.",
-                       statusText: "Pendente"
-                   };
-                   simulatedAppointments[newAppointmentId] = newAppointment;
                    
                    // Re-renderiza a tabela para incluir a nova consulta
                    renderAppointmentsTable();
