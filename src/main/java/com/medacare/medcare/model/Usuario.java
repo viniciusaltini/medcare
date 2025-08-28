@@ -2,12 +2,16 @@ package com.medacare.medcare.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -30,6 +34,10 @@ public class Usuario {
 	BigDecimal peso;
 	@Column (name = "altura_usuario")
 	BigDecimal altura;
+	
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Agendamento> agendamentos = new ArrayList<>();
+	
 	public int getIdUsuario() {
 		return idUsuario;
 	}

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -150,6 +151,28 @@ public class UsuarioController {
         Optional<Usuario> usuarioOpt = usuService.findByEmail(email);
         
         return ResponseEntity.ok(usuarioOpt.map(Usuario::getNomeUsuario).orElse("Visitante"));
+    }
+    
+    @GetMapping("/id-atual")
+    public ResponseEntity<String> getIdUsuarioAtual(Authentication authentication) {
+        
+        if (authentication == null || !authentication.isAuthenticated() || 
+            "anonymousUser".equals(authentication.getPrincipal())) {
+            return ResponseEntity.ok("Visitante");
+        }
+
+        try {
+            String email = authentication.getName();
+            Usuario usuario = usuService.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para email: " + email));
+            
+            return ResponseEntity.ok(String.valueOf(usuario.getIdUsuario()));
+            
+        } catch (Exception e) {
+            // Log do erro
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("1"); // Fallback para ID 1 em caso de erro
+        }
     }
 	
 }

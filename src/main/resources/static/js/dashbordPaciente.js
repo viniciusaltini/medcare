@@ -98,59 +98,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function carregarMedicos() {
   const select = document.getElementById('doctorName');
-  select.add(new Option('Teste Médico (Especialidade)', '999'));
   const errorDiv = document.getElementById('errorMessage');
 
-  // placeholder enquanto carrega
   select.innerHTML = '<option disabled selected>Carregando…</option>';
   errorDiv.textContent = '';
 
   try {
     const resp = await fetch('http://localhost:8080/medicos');
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-
-    const data = await resp.json();
-
-    // Se vier paginado (Spring Data), tenta pegar de data.content
-    const medicos = Array.isArray(data) ? data : (Array.isArray(data?.content) ? data.content : []);
-
-    // Debug: veja no console se os campos estão lá
     
-
-    // Limpa e repõe placeholder
-    select.innerHTML = '<option value="" disabled selected>Selecione um médico…</option>';
-
-
-    // Mapeamento EXATO do seu JSON: idMedico + nomeMedico
-    medicos.forEach(m => {
-    const id = m.idMedico || m.id_medicos;
-    const nome = m.nomeMedico || m.nome_medico;
-    const especialidade = m.especialidade || '';
-    const option = document.createElement('option');
-    option.value = id;
-    option.textContent = `${nome} (${especialidade})`;
-    select.appendChild(option);
-    });
-    // Depois do forEach que adiciona as opções:
+    // DEBUG: Verifique o que está vindo da API
+    console.log('Status:', resp.status);
+    const responseText = await resp.text();
+    console.log('Resposta bruta:', responseText);
     
-
-    // Se só ficou o placeholder, algo deu ruim
-    if (select.options.length === 1) {
-      errorDiv.textContent =
-        '⚠️ Recebi ' + medicos.length + ' registros, mas não consegui montar o texto das opções. Veja o console.';
-      console.log('HTML do <select>:', select.innerHTML);
+    if (!resp.ok) {
+      throw new Error(`HTTP ${resp.status}: ${responseText}`);
     }
 
-    // (Opcional) ajuda a debugar ao escolher
-    select.addEventListener('change', (e) => {
-      const opt = e.target.selectedOptions[0];
-      console.log('Escolhido:', opt.text, ' – id:', opt.value);
+    // Tente fazer parse do JSON
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Erro ao parsear JSON:', parseError, 'Conteúdo:', responseText);
+      throw new Error('Resposta inválida do servidor');
+    }
+
+    // Continue com o processamento...
+    const medicos = Array.isArray(data) ? data : (Array.isArray(data?.content) ? data.content : []);
+    
+    console.log('Médicos recebidos:', medicos);
+
+    select.innerHTML = '<option value="" disabled selected>Selecione um médico…</option>';
+
+    medicos.forEach(m => {
+      const id = m.idMedico || m.id_medicos || m.id;
+      const nome = m.nomeMedico || m.nome_medico || m.nome;
+      const especialidade = m.especialidade || '';
+      
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = `${nome} (${especialidade})`;
+      select.appendChild(option);
     });
 
+    if (select.options.length === 1) {
+      errorDiv.textContent = 'Nenhum médico disponível';
+    }
+
   } catch (e) {
-    console.error(e);
-    errorDiv.textContent = '❌ Não foi possível carregar a lista de médicos. Tente novamente.';
-    // mantém o select com a última mensagem
+    console.error('Erro ao carregar médicos:', e);
+    errorDiv.textContent = '❌ Erro ao carregar médicos: ' + e.message;
     select.innerHTML = '<option disabled selected>Erro ao carregar</option>';
   }
 }
@@ -189,13 +187,15 @@ document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
                        showFormMessage(scheduleMessage, 'Por favor, preencha todos os campos para agendar a consulta.', 'error');
                        return;
                    }
-                   // Busca o id do paciente atual
-                    let pacienteId = null;
+                   /// Busca o id do paciente atual
+                    let pacienteId = null; // Use 'let' em vez de 'const' pois será reatribuído
                     try {
-                        const userResp = await fetch('http://localhost:8080/usuarios/atual', { credentials: 'include' });
+                        const userResp = await fetch('http://localhost:8080/usuarios/atual', { 
+                            credentials: 'include' 
+                        });
                         if (userResp.ok) {
                             const userData = await userResp.json();
-                            pacienteId = userData.idUsuario || userData.id_usuarios || userData.id; // ajuste conforme o campo retornado
+                            pacienteId = userData.idUsuario || userData.id_usuarios || userData.id;
                         }
                     } catch (e) {
                         showFormMessage(scheduleMessage, 'Erro ao obter dados do paciente.', 'error');
@@ -206,18 +206,22 @@ document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
                         showFormMessage(scheduleMessage, 'Não foi possível identificar o paciente.', 'error');
                         return;
                     }
-                    appointmentTypeValue = appointmentType.toLowerCase() === "presencial";
+
+                    const appointmentTypeValue = appointmentType.toLowerCase() === "presencial";
+
+                    // CORREÇÃO: Use o formato correto do DTO
                     const response = await fetch('http://localhost:8080/agendamentos', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        data_agendamento: datetime,
-                        id_medicos: doctorid,
-                        id_paciente: pacienteId,
-                        tipo_consulta: appointmentType,
-                        motivo_consulta: reason
-                    })
-                });
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            dataAgendamento: datetime,
+                            idMedico: doctorid,        // Mude de 'medico' para 'idMedico'
+                            idUsuario: pacienteId,     // Mude de 'usuario' para 'idUsuario'
+                            tipoConsulta: appointmentTypeValue,
+                            motivoConsulta: reason,
+                            anamnese: null
+                        })
+                    });
                 console.log('Resposta do servidor:', response);
 
                  if (response.ok) {
@@ -283,87 +287,7 @@ document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
 
            // --- Lógica de Modal de Detalhes da Consulta ---
            // Dados simulados de consultas com mais detalhes
-           const simulatedAppointments = {
-               "1": {
-                   id: "1",
-                   doctor: "Dr. João Silva",
-                   date: "2025-08-10",
-                   time: "14:00",
-                   specialty: "Clínico Geral",
-                   status: "confirmed",
-                   reason: "Consulta de rotina e check-up anual.",
-                   appointmentType: "Presencial",
-                   doctorNotes: "Paciente com boa saúde geral, exames de rotina solicitados. Retorno em 6 meses.",
-                   prescription: "Multivitamínico (1x ao dia por 30 dias).",
-                   statusText: "Confirmada" 
-               },
-               "2": {
-                   id: "2",
-                   doctor: "Dra. Ana Costa",
-                   date: "2025-07-28",
-                   time: "10:30",
-                   specialty: "Cardiologista",
-                   status: "completed",
-                   reason: "Acompanhamento de pressão arterial e exames cardíacos.",
-                   appointmentType: "Presencial",
-                   doctorNotes: "Paciente apresentou resultados satisfatórios. Manter medicação conforme prescrito. Próxima consulta em 1 ano.",
-                   prescription: "Losartana 50mg (1x ao dia).",
-                   statusText: "Concluída"
-               },
-               "3": {
-                   id: "3",
-                   doctor: "Dr. Pedro Rocha",
-                   date: "2025-08-15",
-                   time: "09:00",
-                   specialty: "Pediatra",
-                   status: "pending",
-                   reason: "Vacinação e consulta de rotina para criança.",
-                   appointmentType: "Presencial",
-                   doctorNotes: "Aguardando vacinação e avaliação do desenvolvimento.",
-                   prescription: "Nenhuma (aguardando consulta).",
-                   statusText: "Pendente"
-               },
-               "4": {
-                   id: "4",
-                   doctor: "Dra. Marta Lima",
-                   date: "2025-07-20",
-                   time: "16:00",
-                   specialty: "Dermatologista",
-                   status: "canceled",
-                   reason: "Avaliação de lesão na pele.",
-                   appointmentType: "Online",
-                   doctorNotes: "Consulta cancelada pelo paciente. Motivo: Indisponibilidade. Remarcar.",
-                   prescription: "Nenhuma.",
-                   statusText: "Cancelada"
-               },
-               "5": {
-                   id: "5",
-                   doctor: "Dra. Sofia Nogueira",
-                   date: "2025-09-01",
-                   time: "11:00",
-                   specialty: "Ginecologista",
-                   status: "confirmed",
-                   reason: "Exames de rotina e acompanhamento anual.",
-                   appointmentType: "Presencial",
-                   doctorNotes: "Agendamento confirmado. Preparar exames pré-consulta.",
-                   prescription: "Nenhuma.",
-                   statusText: "Confirmada"
-               },
-               "6": {
-                   id: "6",
-                   doctor: "Dr. Ricardo Dias",
-                   date: "2025-07-10",
-                   time: "15:00",
-                   specialty: "Oftalmologista",
-                   status: "completed",
-                   reason: "Avaliação de grau e saúde ocular.",
-                   appointmentType: "Presencial",
-                   doctorNotes: "Exame de vista realizado, nova receita emitida.",
-                   prescription: "Óculos com grau atualizado.",
-                   statusText: "Concluída"
-               }
-           };
-
+           
            // Elementos da Modal de Detalhes
            const appointmentDetailsModal = document.getElementById('appointmentDetailsModal');
            const closeButtonDetails = appointmentDetailsModal.querySelector('.close-button');

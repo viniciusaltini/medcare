@@ -23,10 +23,9 @@ public class UsuarioDetailsService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername (String email) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Usuario usuario = repo.findByEmailUsuario(email)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-		return new User(usuario.getEmailUsuario(), usuario.getSenhaUsuario(),
-				Collections.singletonList(new SimpleGrantedAuthority("USER")));
+		return new UsuarioDetails(usuario); // Retorna os detalhes do funcionário para autenticação
 	}
 }

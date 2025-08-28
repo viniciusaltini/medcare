@@ -40,14 +40,14 @@ INSERT INTO medicos (nome_medico, crm, senha_medico, data_nascimento_medico, esp
 -- =========================
 -- TABELA DE AGENDAMENTOS
 -- =========================
-CREATE TABLE agendamento (
+CREATE TABLE agendamentos (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     data_agendamento DATETIME NOT NULL,
     id_medicos INT NOT NULL,
     id_usuarios INT NOT NULL,
     tipo_consulta TINYINT NOT NULL, -- Pode ser ENUM no futuro
-    motivo_consulta VARCHAR(250) NOT NULL,
-    anamnese VARCHAR(10000) NULL,
+    motivo_consulta VARCHAR(500) NOT NULL,
+    anamnese TEXT NULL,
 
     -- Chaves estrangeiras
     CONSTRAINT fk_agendamento_medico FOREIGN KEY (id_medicos) REFERENCES medicos(id_medicos),

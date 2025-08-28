@@ -1,6 +1,8 @@
 package com.medacare.medcare.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,10 +32,11 @@ public class Agendamento {
 	Usuario usuario;
 	@Column(name="tipo_consulta")
 	boolean tipoConsulta;
-	@Column(name="motivo_consulta")
+	@Column(name="motivo_consulta", length = 500)
 	String motivoConsulta;
-	@Column(name="anamnese")
+	@Column(name="anamnese", columnDefinition = "TEXT")
 	String anamnese;
+	
 	
 	
 	
@@ -96,7 +99,7 @@ public class Agendamento {
 	@Override
 	public String toString() {
 		return "Agendamento [idAgendamento=" + idAgendamento + ", dataAgendamento=" + dataAgendamento + ", medico="
-				+ medico + ", usuario=" + usuario + ", tipoConsulta=" + tipoConsulta + ", motivoConsulta="
+				+ (medico != null ? medico.getIdMedico() : "null") + ", usuario=" + usuario + ", tipoConsulta=" + tipoConsulta + ", motivoConsulta="
 				+ motivoConsulta + ", anamnese=" + anamnese + "]";
 	}
 	

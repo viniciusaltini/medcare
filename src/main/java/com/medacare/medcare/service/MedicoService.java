@@ -3,6 +3,7 @@ package com.medacare.medcare.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medacare.medcare.model.Medico;
@@ -11,6 +12,7 @@ import com.medacare.medcare.repo.MedicoRepo;
 @Service
 public class MedicoService {
 		
+	@Autowired
 	private final MedicoRepo medRepo;
 	
 	public MedicoService(MedicoRepo medRepo) {
@@ -18,28 +20,45 @@ public class MedicoService {
 		this.medRepo = medRepo;
 	}
 
-	public void inserirMedico (Medico med) {
-		if (med.getCrm().length() != 13) {
-			throw new RuntimeException("CRM inválido");
-		}
-		medRepo.save(med);
-	}
+	public Medico inserirMedico(Medico medico) {
+        return medRepo.save(medico);
+    }
+    
+    public List<Medico> listarTodosMedicos() {
+        return medRepo.findAll();
+    }
+    
+    public Medico atualizarMedico(int id, Medico medicoAtualizado) {
+        return medRepo.findById(id)
+            .map(medico -> {
+                medico.setNomeMedico(medicoAtualizado.getNomeMedico());
+                medico.setCrm(medicoAtualizado.getCrm());
+                medico.setSenhaMedico(medicoAtualizado.getSenhaMedico());
+                medico.setDataNascMedico(medicoAtualizado.getDataNascMedico());
+                medico.setEspecialidade(medicoAtualizado.getEspecialidade());
+                return medRepo.save(medico);
+            })
+            .orElseThrow(() -> new RuntimeException("Médico não encontrado"));
+    }
+    
+    public void deletarMedico(int id) {
+        medRepo.deleteById(id);
+    }
+    
+    public Optional<Medico> buscarMedicoPorId(int id) {
+        return medRepo.findById(id);
+    }
+    
+    public List<Medico> buscarMedicosPorEspecialidade(String especialidade) {
+        return medRepo.findByEspecialidade(especialidade);
+    }
+    
+    public Optional<Medico> buscarMedicoPorCrm(String crm) {
+        return medRepo.findByCrm(crm);
+    }
+    
+    public boolean existePorCrm(String crm) {
+        return medRepo.existsByCrm(crm);
+    }
 	
-	public List<Medico> listarMedicos (){
-		return medRepo.findAll();
-	}
-	
-	public void atualizarMedico (Medico med){
-		if(medRepo.existsByCrmAndIdMedicoNot(med.getCrm(), med.getIdMedico())) {
-			throw new RuntimeException("CRM já existe");
-		}
-		medRepo.save(med);
-	}
-	
-	public void deletarMedico (int id) {
-		medRepo.deleteById(id);
-	}
-	public Optional<Medico> listaPorId (int id) {
-		return medRepo.findById(id);
-	}
 }

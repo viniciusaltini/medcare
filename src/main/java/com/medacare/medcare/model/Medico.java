@@ -1,12 +1,19 @@
 package com.medacare.medcare.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +33,14 @@ public class Medico {
 	LocalDate dataNascMedico;
 	@Column(name = "especialidade")
 	String especialidade;
-
+	
+		@OneToMany(mappedBy = "medico", 
+            fetch = FetchType.LAZY, 
+            cascade = CascadeType.ALL, 
+            orphanRemoval = true)
+		@JsonIgnore
+		private List<Agendamento> agendamentos = new ArrayList<>();
+	
 	public int getIdMedico() {
 		return idMedico;
 	}
@@ -74,6 +88,25 @@ public class Medico {
 	public void setEspecialidade(String especialidade) {
 		this.especialidade = especialidade;
 	}
+	
+	public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+    
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
+    }
+    
+    // Métodos utilitários para gerenciar agendamentos
+    public void addAgendamento(Agendamento agendamento) {
+        agendamentos.add(agendamento);
+        agendamento.setMedico(this);
+    }
+    
+    public void removeAgendamento(Agendamento agendamento) {
+        agendamentos.remove(agendamento);
+        agendamento.setMedico(null);
+    }
 
 	public Medico(int idMedico, String nomeMedico, String crm, String senhaMedico, LocalDate dataNascMedico,
 			String especialidade) {
@@ -87,7 +120,7 @@ public class Medico {
 	}
 
 	public Medico() {
-		super();
+		
 	}
 
 }
