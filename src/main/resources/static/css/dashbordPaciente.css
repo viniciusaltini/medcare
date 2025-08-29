@@ -53,7 +53,7 @@
             flex-direction: column;
             box-shadow: var(--box-shadow-md);
             z-index: 100;
-            height: 100vh;
+            height: 100%;
         }
 
         .sidebar-header {
@@ -67,7 +67,6 @@
             display: inline-flex;
             background-color: #E7D7C1;
             color: var(--primary-blue);
-            margin-left: auto; /* Empurra o botão para baixo */
             justify-content: center;
             align-self: center;
             align-items: center;
@@ -81,6 +80,10 @@
             gap: 8px;
             padding: 15px;
             box-shadow: 0 4px 10px #A78A7F;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            width: calc(100% - 40px); /* Largura menos as margens */
         }
         .sidebar-button :hover {
             box-shadow: 0 6px 15px #A78A7F;
@@ -443,18 +446,22 @@
 
         /* Estilos para a Janela Modal */
         .modal {
-            display: none; /* Escondido por padrão */
-            position: fixed; /* Fica por cima de tudo */
-            z-index: 1000; /* Alto z-index para estar no topo */
-            left: 0;
-            top: 0;
-            width: 100%; /* Largura total */
-            height: 100%; /* Altura total */
-            overflow: auto; /* Habilita scroll se o conteúdo for muito grande */
-            background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente escuro */
-            display: flex; /* Para centralizar o conteúdo */
-            justify-content: center;
-            align-items: center;
+    display: none; /* Deve ficar escondida por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adicione esta classe para quando a modal estiver visível */
+        .modal.show {
+            display: flex;
         }
 
         .modal-content {
