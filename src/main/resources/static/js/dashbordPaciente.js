@@ -82,6 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
                    const sectionId = link.dataset.section; // Pega o ID da seção do atributo data-section
                    showSection(sectionId); // Exibe a seção
                    activateNavLink(sectionId); // Ativa o link na sidebar
+                   // Carrega consultas quando a seção for aberta
+                    if (sectionId === 'my-appointments') {
+                        // Usa a função do arquivo externo
+                        if (typeof carregarConsultasUsuario === 'function') {
+                            setTimeout(() => {
+                                carregarConsultasUsuario();
+                            }, 100);
+                        }
+                    }
                });
            });
 
@@ -98,57 +107,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function carregarMedicos() {
   const select = document.getElementById('doctorName');
+  select.add(new Option('Teste Médico (Especialidade)', '999'));
   const errorDiv = document.getElementById('errorMessage');
 
+  // placeholder enquanto carrega
   select.innerHTML = '<option disabled selected>Carregando…</option>';
   errorDiv.textContent = '';
 
   try {
     const resp = await fetch('http://localhost:8080/medicos');
-    
-    // DEBUG: Verifique o que está vindo da API
-    console.log('Status:', resp.status);
-    const responseText = await resp.text();
-    console.log('Resposta bruta:', responseText);
-    
-    if (!resp.ok) {
-      throw new Error(`HTTP ${resp.status}: ${responseText}`);
-    }
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
 
-    // Tente fazer parse do JSON
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error('Erro ao parsear JSON:', parseError, 'Conteúdo:', responseText);
-      throw new Error('Resposta inválida do servidor');
-    }
+    const data = await resp.json();
 
-    // Continue com o processamento...
+    // Se vier paginado (Spring Data), tenta pegar de data.content
     const medicos = Array.isArray(data) ? data : (Array.isArray(data?.content) ? data.content : []);
-    
-    console.log('Médicos recebidos:', medicos);
 
+    // Debug: veja no console se os campos estão lá
+    
+
+    // Limpa e repõe placeholder
     select.innerHTML = '<option value="" disabled selected>Selecione um médico…</option>';
 
-    medicos.forEach(m => {
-      const id = m.idMedico || m.id_medicos || m.id;
-      const nome = m.nomeMedico || m.nome_medico || m.nome;
-      const especialidade = m.especialidade || '';
-      
-      const option = document.createElement('option');
-      option.value = id;
-      option.textContent = `${nome} (${especialidade})`;
-      select.appendChild(option);
-    });
 
+    // Mapeamento EXATO do seu JSON: idMedico + nomeMedico
+    medicos.forEach(m => {
+    const id = m.idMedico || m.id_medicos;
+    const nome = m.nomeMedico || m.nome_medico;
+    const especialidade = m.especialidade || '';
+    const option = document.createElement('option');
+    option.value = id;
+    option.textContent = `${nome} (${especialidade})`;
+    select.appendChild(option);
+    });
+    // Depois do forEach que adiciona as opções:
+    
+
+    // Se só ficou o placeholder, algo deu ruim
     if (select.options.length === 1) {
       errorDiv.textContent = 'Nenhum médico disponível';
     }
 
   } catch (e) {
-    console.error('Erro ao carregar médicos:', e);
-    errorDiv.textContent = '❌ Erro ao carregar médicos: ' + e.message;
     select.innerHTML = '<option disabled selected>Erro ao carregar</option>';
   }
 }
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
 // Busca dados atualizados
 document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
            // Simulação de Submissão de Agendamento: Lida com o formulário de agendamento de consulta
-           if (scheduleAppointmentForm) {
+            if (scheduleAppointmentForm) {
                scheduleAppointmentForm.addEventListener('submit', async function (event) {
                     event.preventDefault(); // Impede o envio real do formulário
                    
@@ -239,7 +239,6 @@ document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
                    updateOverviewCounts();
                });
            }
-
            // Lógica de Edição de Perfil: Gerencia a edição dos campos do perfil
            // Função para alternar o modo de edição dos inputs e visibilidade dos botões
            const toggleProfileEdit = (isEditing) => {
@@ -287,7 +286,7 @@ document.addEventListener('DOMContentLoaded', carregarNomeUsuario);
 
            // --- Lógica de Modal de Detalhes da Consulta ---
            // Dados simulados de consultas com mais detalhes
-           
+
            // Elementos da Modal de Detalhes
            const appointmentDetailsModal = document.getElementById('appointmentDetailsModal');
            const closeButtonDetails = appointmentDetailsModal.querySelector('.close-button');
